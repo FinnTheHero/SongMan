@@ -10,9 +10,9 @@ type PlaylistBlueprint struct {
 }
 
 type TrackBlueprint struct {
-	TrackID   spotify.ID             `json:"track_id"`
-	TrackName string                 `json:"track_name"`
-	Artists   []spotify.SimpleArtist `json:"artists"`
-	Duration  int                    `json:"duration"`
-	Link      string                 `json:"link"`
+	TrackID  spotify.ID             `json:"track_id"`
+	Name     string                 `json:"track_name"`
+	Artists  []spotify.SimpleArtist `json:"artists"`
+	Duration int                    `json:"duration"`
+	Link     string                 `json:"link"`
 }
