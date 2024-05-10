@@ -8,19 +8,37 @@ import (
 	"github.com/zmb3/spotify"
 )
 
+/* Generate an exportable track blueprint */
+func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) TrackBlueprint {
+
+	var blueprint TrackBlueprint
+
+	// Get track
+	track := GetTrack(client, trackID)
+
+	// Assign values to the blueprint
+	blueprint.TrackID = track.ID
+	blueprint.TrackName = track.Name
+	blueprint.Artists = track.Artists
+	blueprint.Duration = track.Duration
+	blueprint.Link = track.ExternalURLs["spotify"]
+
+	return blueprint
+}
+
 /* Generate an exportable playlist blueprint */
-func GeneratePlaylistBlueprint(client spotify.Client, playlistIDString spotify.ID) PlaylistBlueprint {
+func GeneratePlaylistBlueprint(client spotify.Client, playlistID spotify.ID) PlaylistBlueprint {
 
 	var blueprint PlaylistBlueprint
 
 	// Get playlist
-	playlist := GetPlaylist(client, playlistIDString)
+	playlist := GetPlaylist(client, playlistID)
 
 	// Get tracks
 	tracks := GetTracks(playlist)
 
 	// Assign values to the blueprint
-	blueprint.PlaylistID = playlist.ID.String()
+	blueprint.PlaylistID = playlist.ID
 	blueprint.Description = playlist.Description
 	blueprint.Tracks = tracks
 	blueprint.Name = playlist.SimplePlaylist.Name
@@ -28,8 +46,32 @@ func GeneratePlaylistBlueprint(client spotify.Client, playlistIDString spotify.I
 	return blueprint
 }
 
-/* Export the blueprint */
-func ExportBlueprint(blueprint PlaylistBlueprint) {
+/* Export the Track blueprint */
+func ExportTrackBlueprint(blueprint TrackBlueprint) {
+	// Create the blueprint directory if it doesn't exist
+	blueprintDir := "../blueprints"
+	err := os.MkdirAll(blueprintDir, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	// Convert blueprint to JSON
+	blueprintJSON, err := json.Marshal(blueprint)
+	if err != nil {
+		panic(err)
+	}
+
+	// Write JSON to file
+	blueprintFileName := blueprint.TrackName + ".json"
+	blueprintFile := filepath.Join(blueprintDir, blueprintFileName)
+	err = os.WriteFile(blueprintFile, blueprintJSON, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
+/* Export the Playlist blueprint */
+func ExportPlaylistBlueprint(blueprint PlaylistBlueprint) {
 	// Create the blueprint directory if it doesn't exist
 	blueprintDir := "../blueprints"
 	err := os.MkdirAll(blueprintDir, os.ModePerm)
@@ -53,12 +95,12 @@ func ExportBlueprint(blueprint PlaylistBlueprint) {
 }
 
 /* Return full playlist details using client and playlist ID. */
-func GetPlaylist(client spotify.Client, playlistIDString spotify.ID) *spotify.FullPlaylist {
+func GetPlaylist(client spotify.Client, playlistID spotify.ID) *spotify.FullPlaylist {
 	// Get the playlist ID
-	playlistID := spotify.ID(playlistIDString)
+	p := spotify.ID(playlistID)
 
 	// Get the playlist
-	playlist, err := client.GetPlaylist(playlistID)
+	playlist, err := client.GetPlaylist(p)
 
 	if err != nil {
 		panic(err)
@@ -73,4 +115,17 @@ func GetTracks(playlist *spotify.FullPlaylist) spotify.PlaylistTrackPage {
 	tracks := playlist.Tracks
 
 	return tracks
+}
+
+func GetTrack(client spotify.Client, trackID spotify.ID) spotify.FullTrack {
+	// Get the track ID
+	t := spotify.ID(trackID)
+
+	// Get the track
+	track, err := client.GetTrack(t)
+	if err != nil {
+		panic(err)
+	}
+
+	return *track
 }
