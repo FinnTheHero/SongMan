@@ -1,9 +1,5 @@
 package main
 
-import (
-	"log"
-)
-
 func main() {
 
 	// Configure client credentials
@@ -12,10 +8,7 @@ func main() {
 	// Create a new client
 	client := GetNewUser(authConfig)
 
-	playlist := GetPlaylist(client, "37i9dQZF1DXcBWIGoYBM5M")
+	blueprint := GeneratePlaylistBlueprint(client, "3cEYpjA9oz9GiPac4AsH4n")
 
-	// Print the playlist details
-	log.Println("playlist id:", playlist.ID)
-	log.Println("playlist name:", playlist.Name)
-	log.Println("playlist description:", playlist.Description)
+	ExportBlueprint(blueprint)
 }

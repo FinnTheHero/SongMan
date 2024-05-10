@@ -7,9 +7,7 @@ import (
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-/*
-Retrieve configuration credentials from the environment variables.
-*/
+/* Retrieve configuration credentials from the environment variables. */
 func GetConfigCredentials() *clientcredentials.Config {
 	// Configure client credentials
 	authConfig := &clientcredentials.Config{
@@ -21,9 +19,7 @@ func GetConfigCredentials() *clientcredentials.Config {
 	return authConfig
 }
 
-/*
-Create a new user client using configuration credentials.
-*/
+/* Create a new user client using configuration credentials. */
 func GetNewUser(authConfig *clientcredentials.Config) spotify.Client {
 	// Get the access token
 	accessToken, err := authConfig.Token(context.Background())
