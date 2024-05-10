@@ -1,12 +1,12 @@
 # SongMan
-Spotify playlist/track to mp3 converter, written in GoLang.
+Spotify playlist/track information to json blueprint converter, written in GoLang.
 
 ## How it works
 1. SongMan will take playlist or track link from spotify and make sure its a valid link.
 
 2. Content will be turned into blueprint and exported in `blueprints` directory with `playlist/track` name and `.json` file extension
 
-You can deal with blueprints however you want.
+You can deal with blueprints however you want, download or use for research.
 
 ## Usage
 1. **Clone the project:**
@@ -29,7 +29,7 @@ You can deal with blueprints however you want.
     **Modes:**
     * **`-track`**: Create blueprint only for a track
     * **`-playlist`**: Create blueprint only for a playlist
-    
+
     **Example:**
     ```bash
     go run . -playlist "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n"
