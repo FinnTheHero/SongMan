@@ -4,3 +4,6 @@
 
 # Fetched Data
 blueprints/
+
+# Build files
+bin/
