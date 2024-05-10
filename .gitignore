@@ -1,0 +1,6 @@
+# Enviromental Variables
+# Includes Cliend ID and Client Secret
+.env
+
+# Fetched Data
+data/
