@@ -6,6 +6,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
+/*
+Retrieve the environment variables from ".env" file.
+
+Options: "CLIENT_ID", "CLIENT_SECRET"
+*/
 func GetEnvVariables(key string) string {
 	err := godotenv.Load("../.env")
 
