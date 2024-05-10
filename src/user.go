@@ -1,0 +1,34 @@
+package main
+
+import (
+	"context"
+
+	"github.com/zmb3/spotify"
+	"golang.org/x/oauth2/clientcredentials"
+)
+
+func GetConfigCredentials() *clientcredentials.Config {
+	// Configure client credentials
+	authConfig := &clientcredentials.Config{
+		ClientID:     GetEnvVariables("CLIENT_ID"),
+		ClientSecret: GetEnvVariables("CLIENT_SECRET"),
+		TokenURL:     spotify.TokenURL,
+	}
+
+	return authConfig
+}
+
+func GetNewUser(authConfig *clientcredentials.Config) spotify.Client {
+	// Get the access token
+	accessToken, err := authConfig.Token(context.Background())
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a new client
+	client := spotify.Authenticator{}.NewClient(accessToken)
+
+	return client
+
+}
