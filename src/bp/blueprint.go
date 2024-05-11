@@ -1,4 +1,4 @@
-package main
+package bp
 
 import (
 	"encoding/json"
