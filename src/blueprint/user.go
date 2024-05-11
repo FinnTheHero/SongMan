@@ -1,7 +1,9 @@
-package bp
+package blueprint
 
 import (
 	"context"
+
+	"SongMan/utils"
 
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2/clientcredentials"
@@ -11,8 +13,8 @@ import (
 func GetConfigCredentials() *clientcredentials.Config {
 	// Configure client credentials
 	authConfig := &clientcredentials.Config{
-		ClientID:     GetEnvVariables("CLIENT_ID"),
-		ClientSecret: GetEnvVariables("CLIENT_SECRET"),
+		ClientID:     utils.GetEnvVariables("CLIENT_ID"),
+		ClientSecret: utils.GetEnvVariables("CLIENT_SECRET"),
 		TokenURL:     spotify.TokenURL,
 	}
 

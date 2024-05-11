@@ -1,4 +1,4 @@
-package bp
+package blueprint
 
 import (
 	"encoding/json"
@@ -7,16 +7,19 @@ import (
 	"path/filepath"
 	"strings"
 
+	"SongMan/types"
+	"SongMan/utils"
+
 	"github.com/zmb3/spotify"
 )
 
 /* Generate an exportable track blueprint */
-func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) TrackBlueprint {
+func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) types.TrackBlueprint {
 
-	var blueprint TrackBlueprint
+	var blueprint types.TrackBlueprint
 
 	// Get track
-	track := GetTrack(client, trackID)
+	track := utils.GetTrack(client, trackID)
 
 	// Assign values to the blueprint
 	blueprint.TrackID = track.ID
@@ -29,15 +32,15 @@ func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) TrackBlue
 }
 
 /* Generate an exportable playlist blueprint */
-func GeneratePlaylistBlueprint(client spotify.Client, playlistID spotify.ID) PlaylistBlueprint {
+func GeneratePlaylistBlueprint(client spotify.Client, playlistID spotify.ID) types.PlaylistBlueprint {
 
-	var blueprint PlaylistBlueprint
+	var blueprint types.PlaylistBlueprint
 
 	// Get playlist
-	playlist := GetPlaylist(client, playlistID)
+	playlist := utils.GetPlaylist(client, playlistID)
 
 	// Get tracks
-	tracks := GetTracks(playlist)
+	tracks := utils.GetTracks(playlist)
 
 	// Assign values to the blueprint
 	blueprint.PlaylistID = playlist.ID
@@ -49,7 +52,7 @@ func GeneratePlaylistBlueprint(client spotify.Client, playlistID spotify.ID) Pla
 }
 
 /* Export the Track blueprint */
-func ExportTrackBlueprint(blueprint TrackBlueprint) {
+func ExportTrackBlueprint(blueprint types.TrackBlueprint) {
 	// Create the blueprint directory if it doesn't exist
 	blueprintDir := "../blueprints"
 	err := os.MkdirAll(blueprintDir, os.ModePerm)
@@ -75,7 +78,7 @@ func ExportTrackBlueprint(blueprint TrackBlueprint) {
 }
 
 /* Export the Playlist blueprint */
-func ExportPlaylistBlueprint(blueprint PlaylistBlueprint) {
+func ExportPlaylistBlueprint(blueprint types.PlaylistBlueprint) {
 	// Create the blueprint directory if it doesn't exist
 	blueprintDir := "../blueprints"
 	err := os.MkdirAll(blueprintDir, os.ModePerm)
