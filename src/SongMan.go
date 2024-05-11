@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	"SongMan/bp"
+	"SongMan/blueprint"
+	"SongMan/utils"
 )
 
 var help bool
@@ -26,22 +27,22 @@ func main() {
 	}
 
 	// Configure client credentials
-	authConfig := bp.GetConfigCredentials()
+	authConfig := blueprint.GetConfigCredentials()
 
 	// Create a new client
-	client := bp.GetNewUser(authConfig)
+	client := blueprint.GetNewUser(authConfig)
 
 	if trackMode == "" && playlistMode == "" {
 		flag.PrintDefaults()
 		fmt.Println("track link: ", trackMode)
 		fmt.Println("playlist link: ", playlistMode)
 	} else if playlistMode != "" {
-		playlistID := bp.ExtractSpotifyID(playlistMode)
-		blueprint := bp.GeneratePlaylistBlueprint(client, playlistID)
-		bp.ExportPlaylistBlueprint(blueprint)
+		playlistID := utils.ExtractSpotifyID(playlistMode)
+		bp := blueprint.GeneratePlaylistBlueprint(client, playlistID)
+		blueprint.ExportPlaylistBlueprint(bp)
 	} else if trackMode != "" {
-		trackID := bp.ExtractSpotifyID(trackMode)
-		blueprint := bp.GenerateTrackBlueprint(client, trackID)
-		bp.ExportTrackBlueprint(blueprint)
+		trackID := utils.ExtractSpotifyID(trackMode)
+		bp := blueprint.GenerateTrackBlueprint(client, trackID)
+		blueprint.ExportTrackBlueprint(bp)
 	}
 }

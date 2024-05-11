@@ -1,4 +1,4 @@
-package bp
+package utils
 
 import (
 	"github.com/zmb3/spotify"
