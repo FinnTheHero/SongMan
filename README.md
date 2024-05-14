@@ -27,7 +27,7 @@ You can deal with blueprints however you want, download or use for research.
     go run . -link "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n"
     ```
 
-> Add `-download true` option to attempt downloading. However this requires `ffmpeg` to be installed on the device. 
+> Add `-download true` option to attempt downloading. However, this requires `ffmpeg` to be installed on the device.
 
 ---
 
