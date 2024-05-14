@@ -2,17 +2,14 @@ package utils
 
 import (
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/joho/godotenv"
 	"github.com/zmb3/spotify"
 )
 
-/*
-Retrieve the environment variables from ".env" file.
-
-Options: "CLIENT_ID", "CLIENT_SECRET"
-*/
+/* Retrieve the environment variables from ".env" file. */
 func GetEnvVariables(key string) string {
 	err := godotenv.Load("../.env")
 
@@ -46,5 +43,17 @@ func ExtractSpotifyID(link string) (spotify.ID, string) {
 	} else {
 		// Return an empty ID if the link is not a valid track or playlist link
 		panic("Invalid link")
+	}
+}
+
+func CheckFileExistence(file string, dir string) bool {
+	filePath := filepath.Join(dir, file)
+	_, err := os.Stat(filePath)
+	if err == nil {
+		return true
+	} else if os.IsNotExist(err) {
+		return false
+	} else {
+		panic(err)
 	}
 }
