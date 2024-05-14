@@ -1,13 +1,13 @@
 package download
 
 import (
-	"SongMan/types"
 	"SongMan/utils"
 	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 
+	"github.com/zmb3/spotify"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 )
@@ -21,16 +21,25 @@ func GetVideoId(trackName string) string {
 	}
 
 	// Unmarshal the JSON data
-	var track types.TrackBlueprint
+	var track spotify.FullTrack
 	err = json.Unmarshal(data, &track)
 	if err != nil {
 		panic(err)
 	}
 
-	// Access the data from the JSON file
-	artist := track.Artists[0].Name
+	var querry string
 
-	querry := track.Name + " " + artist + " audio"
+	if track.ExternalIDs["isrc"] != "" {
+		fmt.Println("ISRC - provided: ", track.ExternalIDs["isrc"])
+		querry = track.ExternalIDs["isrc"]
+	} else {
+		fmt.Println("ISRC - NOT provided")
+
+		// Access the data from the JSON file
+		artist := track.Artists[0].Name
+
+		querry = track.Name + " " + artist + " audio"
+	}
 
 	ctx := context.Background()
 
@@ -46,7 +55,6 @@ func GetVideoId(trackName string) string {
 		panic(err)
 	}
 
-	fmt.Println("Video id: ", response.Items[0].Id.VideoId)
-
+	fmt.Println("Video ID - ", response.Items[0].Id.VideoId)
 	return response.Items[0].Id.VideoId
 }
