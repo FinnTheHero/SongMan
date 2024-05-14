@@ -24,15 +24,7 @@ You can deal with blueprints however you want, download or use for research.
     ```
 4. **Run the project:**
     ```bash
-    go run . <Mode> "<Link>"
-    ```
-    **Modes:**
-    * **`-track`**: Create blueprint only for a track
-    * **`-playlist`**: Create blueprint only for a playlist
-
-    **Example:**
-    ```bash
-    go run . -playlist "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n"
+    go run . -link "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n"
     ```
 
 ---

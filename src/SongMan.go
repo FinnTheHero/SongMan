@@ -2,21 +2,17 @@ package main
 
 import (
 	"flag"
-	"fmt"
 
 	"SongMan/blueprint"
-	"SongMan/download"
 	"SongMan/utils"
 )
 
 var help bool
-var trackMode string
-var playlistMode string
+var Link string
 
 func init() {
 	flag.BoolVar(&help, "help", false, "Display the help message")
-	flag.StringVar(&trackMode, "track", "", "The track link")
-	flag.StringVar(&playlistMode, "playlist", "", "The playlist link")
+	flag.StringVar(&Link, "link", "", "The link to the track or playlist")
 }
 
 func main() {
@@ -33,21 +29,10 @@ func main() {
 	// Create a new client
 	client := blueprint.GetNewUser(authConfig)
 
-	if trackMode == "" && playlistMode == "" {
+	if Link == "" {
 		flag.PrintDefaults()
-		fmt.Println("track link: ", trackMode)
-		fmt.Println("playlist link: ", playlistMode)
-	} else if playlistMode != "" {
-		playlistID := utils.ExtractSpotifyID(playlistMode)
-		bp := blueprint.GeneratePlaylistBlueprint(client, playlistID)
-		blueprint.ExportPlaylistBlueprint(bp)
-
-		download.DownloadAudio(bp.Name)
-	} else if trackMode != "" {
-		trackID := utils.ExtractSpotifyID(trackMode)
-		bp := blueprint.GenerateTrackBlueprint(client, trackID)
-		blueprint.ExportTrackBlueprint(bp)
-
-		download.DownloadAudio(bp.Name)
+	} else if Link != "" {
+		id, mode := utils.ExtractSpotifyID(Link)
+		blueprint.GenerateBlueprint(client, id, mode)
 	}
 }
