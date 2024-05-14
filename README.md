@@ -1,5 +1,5 @@
 # SongMan
-Spotify playlist/track information to json, mp4, mp3 converter, written in GoLang.
+Spotify playlist/track information to json, mp4 and mp3 converter, written in GoLang.
 
 ## How it works
 
