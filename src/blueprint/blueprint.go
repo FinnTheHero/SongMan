@@ -7,11 +7,29 @@ import (
 	"path/filepath"
 	"strings"
 
+	"SongMan/download"
 	"SongMan/types"
 	"SongMan/utils"
 
 	"github.com/zmb3/spotify"
 )
+
+/* Generate blueprint */
+func GenerateBlueprint(client spotify.Client, id spotify.ID, mode string) interface{} {
+	var bp interface{} // Declare bp as an interface{}
+
+	if mode == "track" {
+		bp = GenerateTrackBlueprint(client, id)
+		ExportTrackBlueprint(bp.(types.TrackBlueprint))
+		download.DownloadAudio(bp.(types.TrackBlueprint).Name)
+	} else if mode == "playlist" {
+		bp = GeneratePlaylistBlueprint(client, id)
+		ExportPlaylistBlueprint(bp.(types.PlaylistBlueprint))
+		download.DownloadAudio(bp.(types.PlaylistBlueprint).Name)
+	}
+
+	return bp
+}
 
 /* Generate an exportable track blueprint */
 func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) types.TrackBlueprint {
