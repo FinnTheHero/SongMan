@@ -4,7 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	yt "SongMan/youtube"
+
 	"github.com/kkdai/youtube/v2"
+
 	"github.com/kkdai/youtube/v2/downloader"
 	"github.com/zmb3/spotify"
 )
@@ -12,7 +15,7 @@ import (
 /* Download single track */
 func DownloadTrack(track spotify.FullTrack) {
 	// Get the video information
-	videoId := GetVideoId(track)
+	videoId := yt.GetVideoId(track)
 	if videoId == "" {
 		return
 	}

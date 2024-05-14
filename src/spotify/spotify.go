@@ -1,8 +1,20 @@
-package utils
+package spotify
 
 import (
+	"SongMan/user"
+
 	"github.com/zmb3/spotify"
 )
+
+func HandleSpotify() spotify.Client {
+	// Configure client credentials
+	authConfig := user.GetConfigCredentials()
+
+	// Create a new client
+	client := user.GetNewUser(authConfig)
+
+	return client
+}
 
 /* Return full playlist details using client and playlist ID. */
 func GetPlaylist(client spotify.Client, playlistID spotify.ID) *spotify.FullPlaylist {

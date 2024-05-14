@@ -1,11 +1,11 @@
 package main
 
 import (
-	"flag"
-
 	"SongMan/blueprint"
 	"SongMan/download"
+	s "SongMan/spotify"
 	"SongMan/utils"
+	"flag"
 )
 
 var help bool
@@ -27,29 +27,29 @@ func main() {
 		return
 	}
 
-	// Configure client credentials
-	authConfig := blueprint.GetConfigCredentials()
-
-	// Create a new client
-	client := blueprint.GetNewUser(authConfig)
-
 	if Link == "" {
 		flag.PrintDefaults()
 		return
 	}
 
+	HandleProcessing()
+}
+
+func HandleProcessing() {
+	client := s.HandleSpotify()
+
 	id, mode := utils.ExtractSpotifyID(Link)
 
 	switch mode {
 	case "track":
-		track := utils.GetTrack(client, id)
+		track := s.GetTrack(client, id)
 		blueprint.ExportTrackBlueprint(track)
 
 		if Download {
 			download.DownloadTrack(track)
 		}
 	case "playlist":
-		playlist := utils.GetPlaylist(client, id)
+		playlist := s.GetPlaylist(client, id)
 		blueprint.ExportPlaylistBlueprint(playlist)
 
 		if Download {
