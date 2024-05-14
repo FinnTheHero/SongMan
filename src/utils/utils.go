@@ -22,7 +22,7 @@ func GetEnvVariables(key string) string {
 
 	if key == "" {
 		panic("Key is empty")
-	} else if key != "CLIENT_ID" && key != "CLIENT_SECRET" {
+	} else if key != "CLIENT_ID" && key != "CLIENT_SECRET" && key != "YOUTUBE_API_KEY" {
 		panic("Key is invalid")
 	}
 

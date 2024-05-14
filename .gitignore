@@ -2,8 +2,11 @@
 # Includes Cliend ID and Client Secret
 .env
 
-# Fetched Data
+# Extracted Blueprints
 blueprints/
 
 # Build files
 bin/
+
+# Extracted Videos
+videos/

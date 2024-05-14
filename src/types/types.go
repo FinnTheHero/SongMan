@@ -3,14 +3,14 @@ package types
 import "github.com/zmb3/spotify"
 
 type PlaylistBlueprint struct {
-	PlaylistID  spotify.ID                `json:"playlist_id"`
+	ID          spotify.ID                `json:"playlist_id"`
 	Description string                    `json:"description"`
 	Tracks      spotify.PlaylistTrackPage `json:"tracks"`
 	Name        string                    `json:"playlist_name"`
 }
 
 type TrackBlueprint struct {
-	TrackID  spotify.ID             `json:"track_id"`
+	ID       spotify.ID             `json:"track_id"`
 	Name     string                 `json:"track_name"`
 	Artists  []spotify.SimpleArtist `json:"artists"`
 	Duration int                    `json:"duration"`

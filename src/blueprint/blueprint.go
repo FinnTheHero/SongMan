@@ -22,7 +22,7 @@ func GenerateTrackBlueprint(client spotify.Client, trackID spotify.ID) types.Tra
 	track := utils.GetTrack(client, trackID)
 
 	// Assign values to the blueprint
-	blueprint.TrackID = track.ID
+	blueprint.ID = track.ID
 	blueprint.Name = track.Name
 	blueprint.Artists = track.Artists
 	blueprint.Duration = track.Duration
@@ -43,7 +43,7 @@ func GeneratePlaylistBlueprint(client spotify.Client, playlistID spotify.ID) typ
 	tracks := utils.GetTracks(playlist)
 
 	// Assign values to the blueprint
-	blueprint.PlaylistID = playlist.ID
+	blueprint.ID = playlist.ID
 	blueprint.Description = playlist.Description
 	blueprint.Tracks = tracks
 	blueprint.Name = playlist.SimplePlaylist.Name
