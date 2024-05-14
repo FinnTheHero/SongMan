@@ -6,6 +6,7 @@ import (
 	s "SongMan/spotify"
 	"SongMan/utils"
 	"flag"
+	"fmt"
 )
 
 var help bool
@@ -43,14 +44,24 @@ func HandleProcessing() {
 	switch mode {
 	case "track":
 		track := s.GetTrack(client, id)
-		blueprint.ExportTrackBlueprint(track)
+
+		if exists := utils.CheckFileExistence(track.Name+".json", "../blueprints"); exists {
+			fmt.Println("'Track' blueprint for '" + track.Name + "' already exists.\n")
+		} else {
+			blueprint.ExportTrackBlueprint(track)
+		}
 
 		if Download {
 			download.DownloadTrack(track)
 		}
 	case "playlist":
 		playlist := s.GetPlaylist(client, id)
-		blueprint.ExportPlaylistBlueprint(playlist)
+
+		if exists := utils.CheckFileExistence(playlist.Name+".json", "../blueprints"); exists {
+			fmt.Println("'Playlist' blueprint for '" + playlist.Name + "' already exists.\n")
+		} else {
+			blueprint.ExportPlaylistBlueprint(playlist)
+		}
 
 		if Download {
 			download.DownloadPlaylist(playlist)

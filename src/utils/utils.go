@@ -57,3 +57,12 @@ func CheckFileExistence(file string, dir string) bool {
 		panic(err)
 	}
 }
+
+func GetWorkinDir() string {
+	fileDir, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
+	return fileDir
+}
