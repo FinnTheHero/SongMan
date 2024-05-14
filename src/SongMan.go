@@ -46,14 +46,14 @@ func main() {
 		blueprint.ExportTrackBlueprint(track)
 
 		if Download {
-			download.DownloadTrack(track.Name)
+			download.DownloadTrack(track)
 		}
 	case "playlist":
 		playlist := utils.GetPlaylist(client, id)
 		blueprint.ExportPlaylistBlueprint(playlist)
 
 		if Download {
-			download.DownloadTrack(playlist.Name)
+			download.DownloadPlaylist(playlist)
 		}
 	}
 }
