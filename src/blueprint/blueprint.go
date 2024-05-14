@@ -1,7 +1,9 @@
 package blueprint
 
 import (
+	"SongMan/utils"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -30,6 +32,8 @@ func ExportTrackBlueprint(track spotify.FullTrack) {
 	if err != nil {
 		panic(err)
 	}
+
+	ExportMessage("Track", track.Name)
 }
 
 /* Export the Playlist blueprint */
@@ -54,4 +58,15 @@ func ExportPlaylistBlueprint(playlist *spotify.FullPlaylist) {
 	if err != nil {
 		panic(err)
 	}
+
+	ExportMessage("Playlist", playlist.Name)
+}
+
+/* Export message */
+func ExportMessage(mode string, file string) {
+	fmt.Println("'" + mode + "' blueprint for '" + file + "' has been exported successfully.")
+
+	fileDir := utils.GetWorkinDir()
+
+	fmt.Println("\nLocation: " + fileDir + "/blueprints/" + file + ".json")
 }
