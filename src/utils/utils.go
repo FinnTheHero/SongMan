@@ -29,13 +29,12 @@ func GetEnvVariables(key string) string {
 	return os.Getenv(key)
 }
 
-/* Extracts the Spotify track or playlist ID from a given link */
+/* Extracts the Spotify track or playlist ID and mode from a given link */
 func ExtractSpotifyID(link string) (spotify.ID, string) {
 	// Regular expression patterns for track and playlist links
 	trackPattern := regexp.MustCompile(`^https?:\/\/open.spotify.com\/track\/([a-zA-Z0-9]+)`)
 	playlistPattern := regexp.MustCompile(`^https?:\/\/open.spotify.com\/playlist\/([a-zA-Z0-9]+)`)
 
-	// Check if the link is a track or playlist link
 	if trackPattern.MatchString(link) {
 		// Extract the track ID from the link
 		matches := trackPattern.FindStringSubmatch(link)

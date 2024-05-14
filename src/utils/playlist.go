@@ -27,6 +27,7 @@ func GetTracks(playlist *spotify.FullPlaylist) spotify.PlaylistTrackPage {
 	return tracks
 }
 
+/* Get single track */
 func GetTrack(client spotify.Client, trackID spotify.ID) spotify.FullTrack {
 	// Get the track ID
 	t := spotify.ID(trackID)
