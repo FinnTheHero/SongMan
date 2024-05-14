@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"SongMan/blueprint"
+	"SongMan/download"
 	"SongMan/utils"
 )
 
@@ -40,9 +41,13 @@ func main() {
 		playlistID := utils.ExtractSpotifyID(playlistMode)
 		bp := blueprint.GeneratePlaylistBlueprint(client, playlistID)
 		blueprint.ExportPlaylistBlueprint(bp)
+
+		download.DownloadAudio(bp.Name)
 	} else if trackMode != "" {
 		trackID := utils.ExtractSpotifyID(trackMode)
 		bp := blueprint.GenerateTrackBlueprint(client, trackID)
 		blueprint.ExportTrackBlueprint(bp)
+
+		download.DownloadAudio(bp.Name)
 	}
 }
