@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"SongMan/utils"
 	yt "SongMan/youtube"
 
 	"github.com/kkdai/youtube/v2"
@@ -14,6 +15,12 @@ import (
 
 /* Download single track */
 func DownloadTrack(track spotify.FullTrack) {
+	// Check if the file already exists
+	if ok := utils.CheckFileExistence(track.Name+".mp4", "../videos"); ok {
+		fmt.Println("Video already exists.")
+		return
+	}
+
 	// Get the video information
 	videoId := yt.GetVideoId(track)
 	if videoId == "" {
@@ -59,5 +66,7 @@ func DownloadPlaylist(playlist *spotify.FullPlaylist) {
 
 	for _, track := range tracks {
 		DownloadTrack(track.Track)
+		ConvertToMp3(track.Track.Name)
+		A_process(track.Track, ".mp3")
 	}
 }
