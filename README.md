@@ -11,7 +11,7 @@ Spotify playlist/track information to json, mp4 and mp3 converter, written in Go
 
 3. If specified, blueprints will be used to find the corresponding video on Youtube and download it in `videos` directory with `.mp4` file extension.
 
-4. If downloaded, mp3 will be extracted from mp4 videos in `music` direcotry with `.mp3` file extension.
+4. If downloaded, mp3 will be extracted from mp4 videos into the `music` direcotry with `.mp3` file extension.
 
 ## Usage
 1. **Clone the project:**
