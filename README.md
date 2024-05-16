@@ -41,6 +41,12 @@ Spotify playlist/track information to json, mp4 and mp3 converter, written in Go
     go run . -link "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n" -download true
     ```
 
+## Downsides
+
+1. This is unethical and illegal in some cases.
+
+2. Youtube Data API provides 100 API calls a day so you are limited to 100 downloads a day.
+    > This does not affect blueprint extraction.
 ---
 
 **Author takes no responsibility of how you use this project!**
