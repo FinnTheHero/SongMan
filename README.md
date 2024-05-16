@@ -9,10 +9,9 @@ Spotify playlist/track information to json, mp4 and mp3 converter, written in Go
 
 2. Content will be turned into blueprint and exported in `blueprints` directory with `playlist/track` name and `.json` file extension
 
-3. If specified, blueprints will be used to find the corresponding video on Youtube and download it in `videos` directory with `mp4` file extension.
+3. If specified, blueprints will be used to find the corresponding video on Youtube and download it in `videos` directory with `.mp4` file extension.
 
-4. If specified, mp3 will be extracted from mp4 videos.
-    > Comming Soon
+4. If downloaded, mp3 will be extracted from mp4 videos in `music` direcotry with `.mp3` file extension.
 
 ## Usage
 1. **Clone the project:**
@@ -36,7 +35,11 @@ Spotify playlist/track information to json, mp4 and mp3 converter, written in Go
     go run . -link "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n"
     ```
 
-    > Add `-download true` option to attempt downloading. However, this requires `ffmpeg` to be installed on the device.
+    Add `-download true` option to attempt downloading. However, this requires `ffmpeg` to be installed on the device. This method will also extract audio as an mp3 from downloaded videos.
+
+    ```bash
+    go run . -link "https://open.spotify.com/playlist/3cEYpjA9oz9GiPac4AsH4n" -download true
+    ```
 
 ---
 
