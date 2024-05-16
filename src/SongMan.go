@@ -53,7 +53,10 @@ func HandleProcessing() {
 
 		if Download {
 			download.DownloadTrack(track)
+			download.ConvertToMp3(track.Name)
+			download.A_process(track, ".mp3")
 		}
+
 	case "playlist":
 		playlist := s.GetPlaylist(client, id)
 

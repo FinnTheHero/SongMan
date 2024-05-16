@@ -14,7 +14,7 @@ import (
 /* Find and return ID of corresponding youtube video */
 func GetVideoId(track spotify.FullTrack) string {
 	var isrc string = ""
-	var querry string
+	var querry string = ""
 
 	if track.ExternalIDs["isrc"] != "" {
 		fmt.Println("ISRC - provided: ", track.ExternalIDs["isrc"])
