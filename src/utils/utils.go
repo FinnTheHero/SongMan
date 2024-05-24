@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -79,6 +80,58 @@ func GetWorkinDir() string {
 	}
 
 	return fileDir
+}
+
+func AppendTrackDetailsToFile(trackName string, fileName string, dir string) {
+	if !CheckFileExistence(fileName, dir) {
+		// Create the file
+		file, err := os.Create(filepath.Join(dir, fileName))
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+	}
+
+	// Read the existing JSON data from the file
+	existingData, err := os.ReadFile(filepath.Join(dir, fileName))
+	if err != nil {
+		panic(err)
+	}
+
+	// Parse the existing JSON data into a map
+	var jsonData map[string]interface{}
+	err = json.Unmarshal(existingData, &jsonData)
+	if err != nil {
+		panic(err)
+	}
+
+	// Create a new track details map
+	trackDetails := make(map[string]string)
+	trackDetails["TrackName"] = trackName
+	// Add other details to the track details map
+
+	// Append the new track details to the "downloaded" array
+
+	downloadedArray, ok := jsonData["downloaded"].([]interface{})
+	if !ok {
+		downloadedArray = make([]interface{}, 0)
+	}
+	downloadedArray = append(downloadedArray, trackDetails)
+	jsonData["downloaded"] = downloadedArray
+
+	// Convert the updated JSON data back to bytes
+	updatedData, err := json.Marshal(jsonData)
+	if err != nil {
+		panic(err)
+	}
+
+	// Write the updated JSON data to the file
+	err = os.WriteFile(filepath.Join(dir, fileName), updatedData, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Track cached successfully.")
 }
 
 // downloadFile will download a url to a local file. It's efficient because it will

@@ -18,6 +18,7 @@ func DownloadTrack(track spotify.FullTrack) {
 	// Check if the file already exists
 	if ok := utils.CheckFileExistence(track.Name+".mp4", "../videos"); ok {
 		fmt.Println("Video already exists.")
+		utils.AppendTrackDetailsToFile(track.Name, "videos.json", "../videos")
 		return
 	}
 
@@ -57,6 +58,7 @@ func DownloadTrack(track spotify.FullTrack) {
 	// d.Download(ctx, video, &video.Formats[1], trackName+format)
 
 	d.DownloadComposite(ctx, track.Name+".mp4", video, "720p", "mp4", "")
+	utils.AppendTrackDetailsToFile(track.Name, "videos.json", "../videos")
 }
 
 /* Download playlist */
