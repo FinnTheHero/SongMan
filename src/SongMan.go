@@ -33,6 +33,9 @@ func main() {
 		return
 	}
 
+	// Create folders if they don't exist
+	utils.CreateDirIfNotExist("../blueprints")
+
 	HandleProcessing()
 }
 
@@ -52,6 +55,8 @@ func HandleProcessing() {
 		}
 
 		if Download {
+			utils.CreateDirIfNotExist("../videos")
+			utils.CreateDirIfNotExist("../music")
 			download.DownloadTrack(track)
 			download.ConvertToMp3(track.Name)
 			download.A_process(track, ".mp3")
@@ -67,6 +72,8 @@ func HandleProcessing() {
 		}
 
 		if Download {
+			utils.CreateDirIfNotExist("../videos")
+			utils.CreateDirIfNotExist("../music")
 			download.DownloadPlaylist(playlist)
 		}
 	}
