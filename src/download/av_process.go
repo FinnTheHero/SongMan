@@ -33,6 +33,8 @@ func ConvertToMp3(inputFile string) string {
 	}
 
 	fmt.Println("MP3 - ", inputFile+".mp3")
+	utils.AppendTrackDetailsToFile(inputFile, "music.json", "../music")
+
 	return outputFile
 }
 
