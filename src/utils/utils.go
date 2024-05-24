@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -57,6 +58,17 @@ func CheckFileExistence(file string, dir string) bool {
 		return false
 	} else {
 		panic(err)
+	}
+}
+
+func CreateDirIfNotExist(dir string) {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err := os.Mkdir(dir, 0755)
+		if err != nil {
+			panic(err)
+		} else {
+			fmt.Println("Directory '" + dir + "' created successfully.")
+		}
 	}
 }
 

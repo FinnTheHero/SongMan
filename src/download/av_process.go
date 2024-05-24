@@ -112,5 +112,5 @@ func A_process(file spotify.FullTrack, extension string) {
 		return
 	}
 
-	fmt.Println("Metadata - ", file.Name+extension)
+	fmt.Println("Metadata Applied - ", file.Name+extension)
 }
