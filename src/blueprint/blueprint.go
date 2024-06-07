@@ -28,8 +28,8 @@ func ExportTrackBlueprint(track spotify.FullTrack) {
 
 	// Replace spaces and slashes in the Track name
 	// To avoid error while creating the file
-	trackName := strings.ReplaceAll(track.Name, " ", "_")
-	trackName = strings.ReplaceAll(trackName, "/", "_")
+	trackName := strings.ReplaceAll(track.Name, "/", "_")
+	trackName = strings.ReplaceAll(trackName, " ", "_")
 
 	// Write JSON to file
 	blueprintFileName := trackName + ".json"
@@ -59,8 +59,8 @@ func ExportPlaylistBlueprint(playlist *spotify.FullPlaylist) {
 
 	// Replace spaces and slashes in the playlist name
 	// To avoid error while creating the file
-	playlistName := strings.ReplaceAll(playlist.Name, " ", "_")
-	playlistName = strings.ReplaceAll(playlistName, "/", "_")
+	playlistName := strings.ReplaceAll(playlist.Name, "/", "_")
+	playlistName = strings.ReplaceAll(playlistName, " ", "_")
 
 	// Write JSON to file
 	blueprintFileName := playlistName + ".json"

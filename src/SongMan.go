@@ -21,6 +21,7 @@ func init() {
 
 func main() {
 
+	// Parse and handle arguments
 	flag.Parse()
 
 	if help {
@@ -35,45 +36,48 @@ func main() {
 
 	// Create folders if they don't exist
 	utils.CreateDirIfNotExist("../blueprints")
+	utils.CreateDirIfNotExist("../videos")
+	utils.CreateDirIfNotExist("../music")
 
+	// Handle the downloading and blueprinting
 	HandleProcessing()
 }
 
 func HandleProcessing() {
+
 	client := s.HandleSpotify()
 
-	id, mode := utils.ExtractSpotifyID(Link)
+	// Get the ID and mode of the link
+	id, mode := s.ExtractSpotifyID(Link)
+
+	// Check if file exists already
+	utils.CheckFileExistence(id.String()+".json", "../blueprints")
 
 	switch mode {
 	case "track":
 		track := s.GetTrack(client, id)
 
-		if exists := utils.CheckFileExistence(track.Name+".json", "../blueprints"); exists {
+		if utils.CheckFileExistence(track.Name+".json", "../blueprints") {
 			fmt.Println("'Track' blueprint for '" + track.Name + "' already exists.\n")
 		} else {
 			blueprint.ExportTrackBlueprint(track)
 		}
 
 		if Download {
-			utils.CreateDirIfNotExist("../videos")
-			utils.CreateDirIfNotExist("../music")
-			download.DownloadTrack(track)
-			download.ConvertToMp3(track.Name)
-			download.A_process(track, ".mp3")
+			download.DownloadTrack(track, "")
+			download.ConvertToMp3(track, "")
 		}
 
 	case "playlist":
 		playlist := s.GetPlaylist(client, id)
 
-		if exists := utils.CheckFileExistence(playlist.Name+".json", "../blueprints"); exists {
+		if utils.CheckFileExistence(playlist.Name+".json", "../blueprints") {
 			fmt.Println("'Playlist' blueprint for '" + playlist.Name + "' already exists.\n")
 		} else {
 			blueprint.ExportPlaylistBlueprint(playlist)
 		}
 
 		if Download {
-			utils.CreateDirIfNotExist("../videos")
-			utils.CreateDirIfNotExist("../music")
 			download.DownloadPlaylist(playlist)
 		}
 	}
