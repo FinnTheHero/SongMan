@@ -3,6 +3,9 @@ package download
 import (
 	"context"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
 
 	"SongMan/utils"
 	yt "SongMan/youtube"
@@ -14,11 +17,13 @@ import (
 )
 
 /* Download single track */
-func DownloadTrack(track spotify.FullTrack) {
+func DownloadTrack(track spotify.FullTrack, playlistName string) {
+
+	utils.Divider()
+
 	// Check if the file already exists
 	if ok := utils.CheckFileExistence(track.Name+".mp4", "../videos"); ok {
-		fmt.Println("Video already exists.")
-		utils.AppendTrackDetailsToFile(track.Name, "videos.json", "../videos")
+		fmt.Println("MP4 already exists.")
 		return
 	}
 
@@ -58,7 +63,7 @@ func DownloadTrack(track spotify.FullTrack) {
 	// d.Download(ctx, video, &video.Formats[1], trackName+format)
 
 	d.DownloadComposite(ctx, track.Name+".mp4", video, "720p", "mp4", "")
-	utils.AppendTrackDetailsToFile(track.Name, "videos.json", "../videos")
+	V_process(track, ".mp4")
 }
 
 /* Download playlist */
@@ -67,8 +72,28 @@ func DownloadPlaylist(playlist *spotify.FullPlaylist) {
 	tracks := playlist.Tracks.Tracks
 
 	for _, track := range tracks {
-		DownloadTrack(track.Track)
-		ConvertToMp3(track.Track.Name)
-		A_process(track.Track, ".mp3")
+		DownloadTrack(track.Track, playlist.Name)
+		ConvertToMp3(track.Track, playlist.Name)
 	}
+}
+
+// downloadFile will download a url to a local file.
+func DownloadImage(filepath string, url string) error {
+	// Create the file
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+	return err
 }

@@ -3,6 +3,7 @@ package download
 import (
 	"SongMan/utils"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -12,28 +13,28 @@ import (
 )
 
 /* Convert the downloaded audio to MP3 */
-func ConvertToMp3(inputFile string) string {
-	// Create music file direcotry if it doesn't exist
+func ConvertToMp3(track spotify.FullTrack, playlistName string) string {
 	musicDir := "../music/"
 
-	err := os.MkdirAll(musicDir, os.ModePerm)
-	if err != nil {
-		panic(err)
+	// Check if file already exists
+	if utils.CheckFileExistence(track.Name+".mp3", musicDir) {
+		fmt.Println("MP3 already exists.")
+		return ""
 	}
 
-	fmt.Println("Converting to MP3 - ", inputFile)
+	fmt.Println("Converting to MP3 - ", track.Name)
 
-	outputFile := musicDir + inputFile + ".mp3"
+	outputFile := musicDir + track.Name + ".mp3"
 
-	cmd := exec.Command("ffmpeg", "-i", "../videos/"+inputFile+".mp4", "-vn", "-acodec", "libmp3lame", "-q:a", "2", outputFile)
+	cmd := exec.Command("ffmpeg", "-i", "../videos/"+track.Name+".mp4", "-vn", "-acodec", "libmp3lame", "-q:a", "2", outputFile)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Println("Error:", err)
-		fmt.Println("ffmpeg output:", string(output))
+		log.Println("Error:", err)
+		log.Println("ffmpeg output:", string(output))
 	}
 
-	fmt.Println("MP3 - ", inputFile+".mp3")
-	utils.AppendTrackDetailsToFile(inputFile, "music.json", "../music")
+	fmt.Println("MP3 - ", track.Name+".mp3")
+	A_process(track, ".mp3")
 
 	return outputFile
 }
@@ -52,13 +53,21 @@ func AddMetadata(file spotify.FullTrack, extension string, dir string) {
 	}
 }
 
-func V_process(file spotify.FullTrack, extension string) {
-	// Add metadata to the mp4 file
+func V_process(track spotify.FullTrack, extension string) {
 	videoDir := "../videos"
-	mp4 := videoDir + file.Name + extension
+	mp4 := videoDir + track.Name + extension
 
-	// cmd := exec.Command("ffmpeg", "-i", mp4, "-metadata", "title=YourTitle", "-metadata", "artist=YourArtist", "-y", mp4)
-	cmd := exec.Command("ffmpeg", "-i", mp4, "-metadata", "title="+file.Name, "-metadata", "artist="+file.Artists[0].Name, "-metadata", "album="+file.Album.Name, "-metadata", "track="+strconv.Itoa(file.TrackNumber), "-metadata", "year="+strings.Split(file.Album.ReleaseDate, "-")[0], "-metadata", "genre="+file.Type, "-metadata", "isrc="+file.ExternalIDs["isrc"], "-metadata", "disc="+strconv.Itoa(file.DiscNumber), "-metadata", "-metadata", "album_artist="+file.Album.Artists[0].Name, "-y", mp4)
+	// Add metadata to the mp4 track
+	cmd := exec.Command("ffmpeg", "-i", mp4,
+		"-metadata", "title="+track.Name,
+		"-metadata", "artist="+track.Artists[0].Name,
+		"-metadata", "album="+track.Album.Name,
+		"-metadata", "track="+strconv.Itoa(track.TrackNumber),
+		"-metadata", "year="+strings.Split(track.Album.ReleaseDate, "-")[0],
+		"-metadata", "genre="+track.Type,
+		"-metadata", "isrc="+track.ExternalIDs["isrc"],
+		"-metadata", "disc="+strconv.Itoa(track.DiscNumber),
+		"-metadata", "album_artist="+track.Album.Artists[0].Name, "-y", mp4)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -69,31 +78,31 @@ func V_process(file spotify.FullTrack, extension string) {
 }
 
 /* Process audio file */
-func A_process(file spotify.FullTrack, extension string) {
-	// Add metadata to the mp3 file
+func A_process(track spotify.FullTrack, extension string) {
 	musicDir := "../music/"
 
 	// Download album cover
-	imgPath := musicDir + file.Name + ".jpg"
-	err := utils.DownloadFile(imgPath, file.Album.Images[0].URL)
+	imgPath := musicDir + track.Name + ".jpg"
+	err := DownloadImage(imgPath, track.Album.Images[0].URL)
 	if err != nil {
 		fmt.Println("Error downloading image:", err)
 		return
 	}
 
-	mp3 := musicDir + file.Name + extension
+	mp3 := musicDir + track.Name + extension
 
-	tempFile := musicDir + file.Name + "_temp" + extension
+	tempFile := musicDir + track.Name + "_temp" + extension
 
+	// Add metadata to the mp3 track
 	cmd := exec.Command("ffmpeg", "-i", imgPath, "-i", mp3,
-		"-metadata", "title="+file.Name,
-		"-metadata", "artist="+file.Artists[0].Name,
-		"-metadata", "album="+file.Album.Name,
-		"-metadata", "track="+strconv.Itoa(file.TrackNumber),
-		"-metadata", "year="+strings.Split(file.Album.ReleaseDate, "-")[0],
-		"-metadata", "isrc="+file.ExternalIDs["isrc"],
-		"-metadata", "disc="+strconv.Itoa(file.DiscNumber),
-		"-metadata", "album_artist="+file.Album.Artists[0].Name,
+		"-metadata", "title="+track.Name,
+		"-metadata", "artist="+track.Artists[0].Name,
+		"-metadata", "album="+track.Album.Name,
+		"-metadata", "track="+strconv.Itoa(track.TrackNumber),
+		"-metadata", "year="+strings.Split(track.Album.ReleaseDate, "-")[0],
+		"-metadata", "isrc="+track.ExternalIDs["isrc"],
+		"-metadata", "disc="+strconv.Itoa(track.DiscNumber),
+		"-metadata", "album_artist="+track.Album.Artists[0].Name,
 		"-map", "0:0", "-map", "1:0", "-c", "copy", "-id3v2_version", "3", "-y", tempFile)
 
 	output, err := cmd.CombinedOutput()
@@ -114,5 +123,5 @@ func A_process(file spotify.FullTrack, extension string) {
 		return
 	}
 
-	fmt.Println("Metadata Applied - ", file.Name+extension)
+	fmt.Println("Metadata Applied - ", track.Name+extension)
 }
