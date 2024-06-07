@@ -21,6 +21,8 @@ func DownloadTrack(track spotify.FullTrack, playlistName string) {
 
 	utils.Divider()
 
+	fmt.Println(track.Name + "\n")
+
 	// Check if the file already exists
 	if ok := utils.CheckFileExistence(track.Name+".mp4", "../videos"); ok {
 		fmt.Println("MP4 already exists.")
